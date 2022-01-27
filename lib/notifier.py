@@ -9,14 +9,10 @@ class NullNotifier:
         pass
 
 class Notifier(NullNotifier):
-    def __init__(self, config, disable_ssl):
+    def __init__(self, config):
         logging.info(f"Setting up bot with token {config['token']}")
         self.config = config
-        if disable_ssl:
-            self.bot = telegram.Bot(token=self.config['token'], request=SSLlessSession())
-        else:
-            self.bot = telegram.Bot(token=self.config['token'])
-
+        self.bot = telegram.Bot(token=self.config['token'])
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
@@ -33,8 +29,8 @@ class Notifier(NullNotifier):
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
 
     @staticmethod
-    def get_instance(config, disable_ssl = False):
+    def get_instance(config):
         if config['enabled']:
-            return Notifier(config, disable_ssl)
+            return Notifier(config)
         else:
             return NullNotifier()
