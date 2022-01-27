@@ -13,7 +13,7 @@ class Inmobusqueda(BaseProvider):
 
             if page_response.status_code != 200:
                 break
-            
+
             page_content = BeautifulSoup(page_response.content, 'lxml')
             properties = page_content.find_all('div', class_='ResultadoCaja')
 
@@ -28,14 +28,14 @@ class Inmobusqueda(BaseProvider):
                 price_section = prop.find('div', class_='resultadoPrecio')
                 if price_section is not None:
                     title = title + ' ' + price_section.get_text().strip()
-                
+
                 internal_id = prop.find('div', class_='codigo').get_text().strip()
                 yield {
-                    'title': title, 
+                    'title': title,
                     'url': href,
                     'internal_id': internal_id,
                     'provider': self.provider_name
-                    }
+                }
 
             page += 1
             page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")

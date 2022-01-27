@@ -9,7 +9,7 @@ from providers.processor import process_properties
 # logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# configuration    
+# configuration
 with open("configuration.yml", 'r') as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 

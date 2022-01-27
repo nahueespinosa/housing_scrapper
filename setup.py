@@ -11,7 +11,7 @@ def create_connection(db_file):
         return conn
     except Exception as e:
         print(e)
- 
+
     return None
 
 def execute(conn, sql):
@@ -44,6 +44,5 @@ with conn:
         # create properties indexes
         execute(conn, sql_create_index_on_properties_table)
     else:
-        print("Error! cannot create the database connection.")        
+        print("Error! cannot create the database connection.")
 
-       

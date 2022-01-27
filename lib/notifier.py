@@ -16,7 +16,7 @@ class Notifier(NullNotifier):
             self.bot = telegram.Bot(token=self.config['token'], request=SSLlessSession())
         else:
             self.bot = telegram.Bot(token=self.config['token'])
-        
+
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
@@ -25,7 +25,7 @@ class Notifier(NullNotifier):
 
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
-            self.bot.send_message(chat_id=self.config['chat_id'], 
+            self.bot.send_message(chat_id=self.config['chat_id'],
                     text=f"[{prop['title']}]({prop['url']})",
                     parse_mode=telegram.ParseMode.MARKDOWN)
 

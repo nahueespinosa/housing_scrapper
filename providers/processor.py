@@ -11,7 +11,7 @@ def register_property(conn, prop):
     try:
         conn.execute(stmt, prop)
     except Exception as e:
-        print(e)
+        logging.error(e)
 
 def process_properties(provider_name, provider_data):
     provider = get_instance(provider_name, provider_data)
@@ -36,7 +36,7 @@ def process_properties(provider_name, provider_data):
                 logging.info('It is a new one')
                 register_property(conn, prop)
                 new_properties.append(prop)
-                    
+
     return new_properties
 
 def get_instance(provider_name, provider_data):

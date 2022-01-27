@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from lib.hostname_ignoring_adapter import HostNameIgnoringAdapter
 import yaml
 
-# configuration    
+# configuration
 with open("configuration.yml", 'r') as ymlfile:
     print('loading config')
     cfg = yaml.safe_load(ymlfile)
@@ -20,7 +20,7 @@ class BaseProvider(ABC):
         self.__scraper = cloudscraper.create_scraper()
         if disable_ssl:
             self.__scraper.mount('https://', HostNameIgnoringAdapter())
-    
+
     @abstractmethod
     def props_in_source(self, source):
         pass
