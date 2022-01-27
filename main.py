@@ -2,27 +2,42 @@
 
 import logging
 import yaml
-import sys
-from lib.notifier import Notifier
-from providers.processor import process_properties
 
-# logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+from notifiers.notifier import TelegramNotifier
 
-# configuration
-with open("configuration.yml", 'r') as ymlfile:
-    cfg = yaml.safe_load(ymlfile)
+from database.database import create_database, store_properties
 
-notifier = Notifier.get_instance(cfg['notifier'])
+from providers.argenprop import Argenprop
+from providers.inmobusqueda import Inmobusqueda
+from providers.mercadolibre import Mercadolibre
+from providers.properati import Properati
+from providers.provider import Provider
+from providers.zonaprop import Zonaprop
 
-new_properties = []
-for provider_name, provider_data in cfg['providers'].items():
-    try:
-        logging.info(f"Processing provider {provider_name}")
-        new_properties += process_properties(provider_name, provider_data)
-    except Exception as e:
-        logging.exception(f"Error processing provider {provider_name}.\n{str(e)}")
-        raise
 
-if len(new_properties) > 0:
+def main() -> None:
+    # logging
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+
+    create_database()
+
+    # configuration
+    with open("configuration.yml", 'r') as ymlfile:
+        cfg = yaml.safe_load(ymlfile)
+
+    notifier = TelegramNotifier(cfg['notifier'])
+
+    new_properties = []
+    for name, config in cfg['providers'].items():
+        try:
+            logging.info(f"Processing provider {name}")
+            provider = Provider.subclasses[name](config)
+            new_properties += store_properties(provider.props())
+        except Exception as error:
+            logging.exception(f"Error processing provider {name}")
+
     notifier.notify(new_properties)
+
+
+if __name__ == '__main__':
+    main()

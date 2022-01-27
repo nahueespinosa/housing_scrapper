@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
-import logging
-from providers.base_provider import BaseProvider
+from providers.provider import Provider
 
-class Properati(BaseProvider):
-    def props_in_source(self, source):
-        page_link = self.provider_data['base_url'] + source
+
+class Properati(Provider):
+    name = 'properati'
+
+    def props_from_source(self, source):
+        page_link = self.config['base_url'] + source
         page = 1
         total_pages = 1
 
@@ -12,9 +14,7 @@ class Properati(BaseProvider):
             if page > total_pages:
                 break
 
-            logging.info("Requesting %s" % page_link)
             page_response = self.request(page_link)
-
             if page_response.status_code != 200:
                 break
 
@@ -25,7 +25,7 @@ class Properati(BaseProvider):
                 nav_list = page_content.select('#page-wrapper > div.results-content > div.container.wide-listing > div.content > div.row.items-container > div.item-list.span6 > div > div.pagination.pagination-centered > ul > li')
                 total_pages = len(nav_list) - 2
 
-            if len(properties) == 0:
+            if not properties:
                 break
 
             for prop in properties:
@@ -45,4 +45,4 @@ class Properati(BaseProvider):
                 }
 
             page += 1
-            page_link = self.provider_data['base_url'] + source + "/%s/" % page
+            page_link = self.config['base_url'] + source + "/%s/" % page

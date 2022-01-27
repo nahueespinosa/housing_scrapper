@@ -1,18 +1,17 @@
-#import requests
 from bs4 import BeautifulSoup
-import logging
-from providers.base_provider import BaseProvider
+from providers.provider import Provider
 
-class Zonaprop(BaseProvider):
-    def props_in_source(self, source):
-        page_link = self.provider_data['base_url'] + source
+
+class Zonaprop(Provider):
+    name = 'zonaprop'
+
+    def props_from_source(self, source):
+        page_link = self.config['base_url'] + source
         page = 1
         processed_ids = []
 
         while(True):
-            logging.info(f"Requesting {page_link}")
             page_response = self.request(page_link)
-
             if page_response.status_code != 200:
                 break
 
@@ -31,10 +30,10 @@ class Zonaprop(BaseProvider):
 
                 yield {
                     'title': title,
-                    'url': self.provider_data['base_url'] + prop['data-to-posting'],
+                    'url': self.config['base_url'] + prop['data-to-posting'],
                     'internal_id': prop['data-id'],
                     'provider': self.provider_name
                 }
 
             page += 1
-            page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")
+            page_link = self.config['base_url'] + source.replace(".html", f"-pagina-{page}.html")

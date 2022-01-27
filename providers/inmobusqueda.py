@@ -1,16 +1,16 @@
 from bs4 import BeautifulSoup
-import logging
-from providers.base_provider import BaseProvider
+from providers.provider import Provider
 
-class Inmobusqueda(BaseProvider):
-    def props_in_source(self, source):
-        page_link = self.provider_data['base_url'] + source
+
+class Inmobusqueda(Provider):
+    name = 'inmobusqueda'
+
+    def props_from_source(self, source):
+        page_link = self.config['base_url'] + source
         page = 1
 
         while True:
-            logging.info(f"Requesting {page_link}")
             page_response = self.request(page_link)
-
             if page_response.status_code != 200:
                 break
 
@@ -38,4 +38,4 @@ class Inmobusqueda(BaseProvider):
                 }
 
             page += 1
-            page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")
+            page_link = self.config['base_url'] + source.replace(".html", f"-pagina-{page}.html")
