@@ -2,11 +2,12 @@ import logging
 import sqlite3
 
 from contextlib import closing
+from typing import Dict, Iterable, List
 
 
 DATABASE_NAME = "properties.db"
 
-def create_database():
+def create_database() -> None:
     sql_create_properties_table = """
                                   CREATE TABLE IF NOT EXISTS properties (
                                       id integer PRIMARY KEY,
@@ -23,14 +24,14 @@ def create_database():
             cursor.execute(sql_create_properties_table)
             cursor.execute(sql_create_index_on_properties_table)
 
-def property_exists(connection, prop) -> bool:
+def property_exists(connection: sqlite3.Connection, prop: Dict[str, str]) -> bool:
     stmt = 'SELECT * FROM properties WHERE internal_id=:internal_id AND provider=:provider'
     with closing(connection.cursor()) as cursor:
         logging.info(f"Processing property {prop['internal_id']}")
         cursor.execute(stmt, {'internal_id': prop['internal_id'], 'provider': prop['provider']})
         return cursor.fetchone() is not None
 
-def store_properties(properties):
+def store_properties(properties: Iterable[Dict[str, str]]) -> List[Dict[str, str]]:
     stmt = 'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
     new_properties = []
     with sqlite3.connect(DATABASE_NAME) as connection:

@@ -3,6 +3,7 @@ import logging
 import yaml
 
 from abc import ABC, abstractmethod
+from typing import Dict, Generator
 
 
 class Provider(ABC):
@@ -21,7 +22,7 @@ class Provider(ABC):
         return self.__scraper.get(url, verify=True)
 
     @abstractmethod
-    def props_from_source(self, source):
+    def props_from_source(self, source) -> Generator[Dict[str, str], None, None]:
         pass
 
     def props(self):

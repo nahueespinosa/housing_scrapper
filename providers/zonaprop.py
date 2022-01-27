@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 from providers.provider import Provider
+from typing import Dict, Generator
 
 
 class Zonaprop(Provider):
-    name = 'zonaprop'
+    name: str = 'zonaprop'
 
-    def props_from_source(self, source):
+    def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
         page_link = self.config['base_url'] + source
         page = 1
         processed_ids = []
