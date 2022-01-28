@@ -8,10 +8,10 @@ from database import Database
 from notifiers import TelegramNotifier
 from providers import Property, Provider
 from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
-from typing import Iterable
+from typing import Iterable, List
 
 
-async def process_properties(db: Database, props: Iterable[Property]):
+async def process_properties(db: Database, props: Iterable[Property]) -> List[Property]:
     return [prop async for prop in props if db.insert_property(prop)]
 
 
