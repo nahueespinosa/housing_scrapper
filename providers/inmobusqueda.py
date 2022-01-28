@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
-from providers.provider import Property, Provider
 from typing import Generator
+
+from .provider import Property, Provider
 
 
 class Inmobusqueda(Provider):

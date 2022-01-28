@@ -2,16 +2,11 @@ import asyncio
 import logging
 import yaml
 
-from providers.zonaprop import Zonaprop
-from providers.argenprop import Argenprop
-from providers.mercadolibre import Mercadolibre
-from providers.properati import Properati
-from providers.provider import Provider
-from providers.inmobusqueda import Inmobusqueda
+from providers import Provider
+from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
 
 
 async def main() -> None:
-    # logging
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
     with open('configuration.yml', 'r') as ymlfile:

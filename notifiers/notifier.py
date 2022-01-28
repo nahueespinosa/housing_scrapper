@@ -2,7 +2,7 @@ import logging
 import random
 import telegram
 
-from providers.provider import Property
+from providers import Property
 from typing import Dict, Sequence
 
 

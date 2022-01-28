@@ -1,7 +1,7 @@
 import sqlite3
 
 from contextlib import closing
-from providers.provider import Property
+from providers import Property
 
 
 class Database:

@@ -4,17 +4,10 @@ import asyncio
 import logging
 import yaml
 
-from notifiers.notifier import TelegramNotifier
-
-from database.database import Database
-
-from providers.argenprop import Argenprop
-from providers.inmobusqueda import Inmobusqueda
-from providers.mercadolibre import Mercadolibre
-from providers.properati import Properati
-from providers.provider import Property, Provider
-from providers.zonaprop import Zonaprop
-
+from database import Database
+from notifiers import TelegramNotifier
+from providers import Property, Provider
+from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
 from typing import Iterable
 
 
