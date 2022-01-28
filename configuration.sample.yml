@@ -1,7 +1,6 @@
 notifier:
     messages:
       - 'A MESSAGE'
-    enabled: true
     chat_id: <CHAT_ID>
     token: <TOKEN>
 providers:
