@@ -1,6 +1,7 @@
 import logging
 import sqlite3
 
+from providers.provider import Property
 from contextlib import closing
 from typing import Dict, Iterable, List
 
@@ -24,19 +25,19 @@ def create_database() -> None:
             cursor.execute(sql_create_properties_table)
             cursor.execute(sql_create_index_on_properties_table)
 
-def property_exists(connection: sqlite3.Connection, prop: Dict[str, str]) -> bool:
+def property_exists(connection: sqlite3.Connection, prop: Property) -> bool:
     stmt = 'SELECT * FROM properties WHERE internal_id=:internal_id AND provider=:provider'
     with closing(connection.cursor()) as cursor:
-        logging.info(f"Processing property {prop['internal_id']}")
-        cursor.execute(stmt, {'internal_id': prop['internal_id'], 'provider': prop['provider']})
+        logging.info(f"Processing property {prop.provider}:{prop.internal_id}")
+        cursor.execute(stmt, prop.__dict__)
         return cursor.fetchone() is not None
 
-def store_properties(properties: Iterable[Dict[str, str]]) -> List[Dict[str, str]]:
+def store_properties(properties: Iterable[Property]) -> List[Property]:
     stmt = 'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
     new_properties = []
     with sqlite3.connect(DATABASE_NAME) as connection:
         for prop in properties:
             if not property_exists(connection, prop):
-                connection.execute(stmt, prop)
+                connection.execute(stmt, prop.__dict__)
                 new_properties.append(prop)
     return new_properties

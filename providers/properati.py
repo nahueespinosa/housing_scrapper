@@ -1,12 +1,12 @@
 from bs4 import BeautifulSoup
-from providers.provider import Provider
-from typing import Dict, Generator
+from providers.provider import Property, Provider
+from typing import Generator
 
 
 class Properati(Provider):
     name: str = 'properati'
 
-    def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
+    def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source
         page = 1
         total_pages = 1
@@ -38,12 +38,10 @@ class Properati(Provider):
                 href = link['href']
                 internal_id = prop.find('a', class_='icon-fav')['data-property_id']
 
-                yield {
-                    'title': title,
-                    'url': href,
-                    'internal_id': internal_id,
-                    'provider': self.name
-                }
+                yield Property(title=title,
+                               url=href,
+                               internal_id=internal_id,
+                               provider=self.name)
 
             page += 1
             page_link = self.config['base_url'] + source + '/%s/' % page

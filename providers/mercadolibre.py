@@ -1,14 +1,14 @@
 import re
 
 from bs4 import BeautifulSoup
-from providers.provider import Provider
-from typing import Dict, Generator
+from providers.provider import Property, Provider
+from typing import Generator
 
 
 class Mercadolibre(Provider):
     name: str = 'mercadolibre'
 
-    def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
+    def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source + '_NoIndex_True'
         from_ = 1
         regex = r'(MLA-\d*)'
@@ -31,16 +31,13 @@ class Mercadolibre(Provider):
                 href = section['href']
                 matches = re.search(regex, href)
                 internal_id = matches.group(1).replace('-', '')
-                price_section = section.find('span', class_='price-tag')
                 title_section = section.find('div', class_='ui-search-item__group--title')
                 title = title_section.find('h2').get_text().strip()
 
-                yield {
-                    'title': title,
-                    'url': href,
-                    'internal_id': internal_id,
-                    'provider': self.name
-                }
+                yield Property(title=title,
+                               url=href,
+                               internal_id=internal_id,
+                               provider=self.name)
 
             from_ += 48
             filter_index = source.find('_')

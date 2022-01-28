@@ -1,14 +1,14 @@
 import re
 
 from bs4 import BeautifulSoup
-from providers.provider import Provider
-from typing import Dict, Generator
+from providers.provider import Property, Provider
+from typing import Generator
 
 
 class Argenprop(Provider):
     name: str = 'argenprop'
 
-    def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
+    def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source
         page = 0
         regex = r'.*--(\d+)'
@@ -33,12 +33,10 @@ class Argenprop(Provider):
                 matches = re.search(regex, href)
                 internal_id = matches.group(1)
 
-                yield {
-                    'title': title,
-                    'url': self.config['base_url'] + href,
-                    'internal_id': internal_id,
-                    'provider': self.name
-                }
+                yield Property(title=title,
+                               url=self.config['base_url'] + href,
+                               internal_id=internal_id,
+                               provider=self.name)
 
             page += 1
             page_link = self.config['base_url'] + source + f'-pagina-{page}'
