@@ -33,7 +33,7 @@ class Zonaprop(Provider):
                     'title': title,
                     'url': self.config['base_url'] + prop['data-to-posting'],
                     'internal_id': prop['data-id'],
-                    'provider': self.provider_name
+                    'provider': self.name
                 }
 
             page += 1

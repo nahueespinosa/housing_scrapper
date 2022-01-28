@@ -37,7 +37,7 @@ class Argenprop(Provider):
                     'title': title,
                     'url': self.config['base_url'] + href,
                     'internal_id': internal_id,
-                    'provider': self.provider_name
+                    'provider': self.name
                 }
 
             page += 1

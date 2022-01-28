@@ -42,7 +42,7 @@ class Properati(Provider):
                     'title': title,
                     'url': href,
                     'internal_id': internal_id,
-                    'provider': self.provider_name
+                    'provider': self.name
                 }
 
             page += 1
