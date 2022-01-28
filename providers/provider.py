@@ -35,7 +35,7 @@ class Provider(ABC):
 
     @abstractmethod
     async def props_from_source(self, source) -> Generator[Property, None, None]:
-        pass
+        raise NotImplementedError
 
     async def props(self) -> Generator[Property, None, None]:
         for index, source in enumerate(self.config['sources']):
