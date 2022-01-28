@@ -17,11 +17,13 @@ class TelegramNotifier:
             text = random.choice(self.config['messages'])
             self.bot.send_message(chat_id=self.config['chat_id'], text=text)
 
-        for prop in properties:
-            logging.info(f"Notifying about {prop['url']}")
-            self.bot.send_message(chat_id=self.config['chat_id'],
-                text=f"[{prop['title']}]({prop['url']})",
-                parse_mode=telegram.ParseMode.MARKDOWN)
+            for prop in properties:
+                logging.info(f"Notifying about {prop['url']}")
+                self.bot.send_message(chat_id=self.config['chat_id'],
+                    text=f"[{prop['title']}]({prop['url']})",
+                    parse_mode=telegram.ParseMode.MARKDOWN)
+        else:
+            logging.info("No new properties to notify about")
 
     def test(self, message: str) -> None:
         self.bot.send_message(chat_id=self.config['chat_id'], text=message)
