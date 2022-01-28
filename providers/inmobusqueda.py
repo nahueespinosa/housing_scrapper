@@ -39,4 +39,4 @@ class Inmobusqueda(Provider):
                 }
 
             page += 1
-            page_link = self.config['base_url'] + source.replace(".html", f"-pagina-{page}.html")
+            page_link = self.config['base_url'] + source.replace('.html', f'-pagina-{page}.html')

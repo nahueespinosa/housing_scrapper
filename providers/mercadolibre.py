@@ -6,12 +6,12 @@ from typing import Dict, Generator
 
 
 class Mercadolibre(Provider):
-    name: str = "mercadolibre"
+    name: str = 'mercadolibre'
 
     def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
         page_link = self.config['base_url'] + source + '_NoIndex_True'
         from_ = 1
-        regex = r"(MLA-\d*)"
+        regex = r'(MLA-\d*)'
 
         while(True):
             page_response = self.request(page_link)
@@ -45,4 +45,4 @@ class Mercadolibre(Provider):
                 }
 
             from_ += 50
-            page_link = self.config['base_url'] + source + f"_Desde_{from_}_NoIndex_True"
+            page_link = self.config['base_url'] + source + f'_Desde_{from_}_NoIndex_True'

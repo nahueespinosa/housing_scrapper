@@ -5,7 +5,7 @@ from contextlib import closing
 from typing import Dict, Iterable, List
 
 
-DATABASE_NAME = "properties.db"
+DATABASE_NAME = 'properties.db'
 
 def create_database() -> None:
     sql_create_properties_table = """

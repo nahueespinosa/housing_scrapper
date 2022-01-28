@@ -18,7 +18,7 @@ class Provider(ABC):
         cls.subclasses[cls.name] = cls
 
     def request(self, url):
-        logging.info(f"Requesting {url}")
+        logging.info(f'Requesting {url}')
         return self.__scraper.get(url, verify=True)
 
     @abstractmethod

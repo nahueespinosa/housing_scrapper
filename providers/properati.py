@@ -46,4 +46,4 @@ class Properati(Provider):
                 }
 
             page += 1
-            page_link = self.config['base_url'] + source + "/%s/" % page
+            page_link = self.config['base_url'] + source + '/%s/' % page

@@ -11,7 +11,7 @@ class Argenprop(Provider):
     def props_from_source(self, source: str) -> Generator[Dict[str, str], None, None]:
         page_link = self.config['base_url'] + source
         page = 0
-        regex = r".*--(\d+)"
+        regex = r'.*--(\d+)'
 
         while(True):
             page_response = self.request(page_link)
@@ -41,4 +41,4 @@ class Argenprop(Provider):
                 }
 
             page += 1
-            page_link = self.config['base_url'] + source + f"-pagina-{page}"
+            page_link = self.config['base_url'] + source + f'-pagina-{page}'

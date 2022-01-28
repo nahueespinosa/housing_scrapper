@@ -22,7 +22,7 @@ def main() -> None:
     create_database()
 
     # configuration
-    with open("configuration.yml", 'r') as ymlfile:
+    with open('configuration.yml', 'r') as ymlfile:
         cfg = yaml.safe_load(ymlfile)
 
     notifier = TelegramNotifier(cfg['notifier'])
@@ -30,11 +30,11 @@ def main() -> None:
     new_properties = []
     for name, config in cfg['providers'].items():
         try:
-            logging.info(f"Processing provider {name}")
+            logging.info(f'Processing provider {name}')
             provider = Provider.subclasses[name](config)
             new_properties += store_properties(provider.props())
         except Exception as error:
-            logging.exception(f"Error processing provider {name}")
+            logging.exception(f'Error processing provider {name}')
 
     notifier.notify(new_properties)
 

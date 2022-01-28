@@ -13,7 +13,7 @@ class TelegramNotifier:
 
     def notify(self, properties: Sequence[Dict[str, str]]) -> None:
         if properties:
-            logging.info(f'Notifying about {len(properties)} properties')
+            logging.info(f"Notifying about {len(properties)} properties")
             text = random.choice(self.config['messages'])
             self.bot.send_message(chat_id=self.config['chat_id'], text=text)
 
