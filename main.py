@@ -30,11 +30,10 @@ def main() -> None:
     new_properties = []
     for name, config in cfg['providers'].items():
         try:
-            logging.info(f'Processing provider {name}')
             provider = Provider.subclasses[name](config)
             new_properties += store_properties(provider.props())
         except Exception as error:
-            logging.exception(f'Error processing provider {name}')
+            logging.exception(f'[main] Error processing provider: {name}')
 
     notifier.notify(new_properties)
 

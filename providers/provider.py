@@ -20,6 +20,7 @@ class Provider(ABC):
     subclasses = dict()
 
     def __init__(self, config):
+        logging.info(f"[{self.name}] Setting up provider")
         self.config = config
         self.__scraper = cloudscraper.create_scraper()
 
@@ -28,7 +29,7 @@ class Provider(ABC):
         cls.subclasses[cls.name] = cls
 
     def request(self, url) -> Response:
-        logging.debug(f'Requesting {url}')
+        logging.debug(f'[{self.name}] Requesting {url}')
         return self.__scraper.get(url, verify=True)
 
     @abstractmethod
@@ -37,5 +38,5 @@ class Provider(ABC):
 
     def props(self) -> Generator[Property, None, None]:
         for index, source in enumerate(self.config['sources']):
-            logging.info(f'Processing source   {self.name}:{index}')
+            logging.info(f'[{self.name}] Processing source {index}')
             yield from self.props_from_source(source)

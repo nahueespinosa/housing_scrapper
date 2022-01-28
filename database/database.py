@@ -28,7 +28,6 @@ def create_database() -> None:
 def property_exists(connection: sqlite3.Connection, prop: Property) -> bool:
     stmt = 'SELECT * FROM properties WHERE internal_id=:internal_id AND provider=:provider'
     with closing(connection.cursor()) as cursor:
-        logging.info(f"Processing property {prop.provider}:{prop.internal_id}")
         cursor.execute(stmt, prop.__dict__)
         return cursor.fetchone() is not None
 
@@ -37,6 +36,7 @@ def store_properties(properties: Iterable[Property]) -> List[Property]:
     new_properties = []
     with sqlite3.connect(DATABASE_NAME) as connection:
         for prop in properties:
+            logging.info(f"[{prop.provider}] Processing property {prop.internal_id}")
             if not property_exists(connection, prop):
                 connection.execute(stmt, prop.__dict__)
                 new_properties.append(prop)
