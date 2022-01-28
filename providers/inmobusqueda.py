@@ -6,16 +6,12 @@ from typing import Generator
 class Inmobusqueda(Provider):
     name: str = 'inmobusqueda'
 
-    def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source
         page = 1
 
         while True:
-            page_response = self.request(page_link)
-            if page_response.status_code != 200:
-                break
-
-            page_content = BeautifulSoup(page_response.content, 'lxml')
+            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='ResultadoCaja')
 
             for prop in properties:

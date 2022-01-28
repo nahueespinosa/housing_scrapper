@@ -6,17 +6,13 @@ from typing import Generator
 class Zonaprop(Provider):
     name: str = 'zonaprop'
 
-    def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source
         page = 1
         processed_ids = []
 
         while(True):
-            page_response = self.request(page_link)
-            if page_response.status_code != 200:
-                break
-
-            page_content = BeautifulSoup(page_response.content, 'lxml')
+            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='postingCard')
 
             for prop in properties:

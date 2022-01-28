@@ -8,18 +8,14 @@ from typing import Generator
 class Mercadolibre(Provider):
     name: str = 'mercadolibre'
 
-    def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source + '_NoIndex_True'
         from_ = 1
         regex = r'(MLA-\d*)'
 
         while(True):
-            page_response = self.request(page_link)
-            if page_response.status_code != 200:
-                break
-
-            page_content = BeautifulSoup(page_response.content, 'lxml')
-            properties = page_content.find_all('li', class_='ui-search-layout__item')
+            content = BeautifulSoup(await self.request(page_link), 'lxml')
+            properties = content.find_all('li', class_='ui-search-layout__item')
 
             if not properties:
                 break

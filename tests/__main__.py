@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import yaml
 
@@ -9,7 +10,7 @@ from providers.provider import Provider
 from providers.inmobusqueda import Inmobusqueda
 
 
-if __name__ == '__main__':
+async def main() -> None:
     # logging
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -18,4 +19,9 @@ if __name__ == '__main__':
 
     for name, config in cfg['providers'].items():
         provider = Provider.subclasses[name](config)
-        [print(prop) for prop in provider.props()]
+        [print(prop) async for prop in provider.props()]
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

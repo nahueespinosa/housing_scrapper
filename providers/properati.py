@@ -6,7 +6,7 @@ from typing import Generator
 class Properati(Provider):
     name: str = 'properati'
 
-    def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
         page_link = self.config['base_url'] + source
         page = 1
         total_pages = 1
@@ -15,11 +15,7 @@ class Properati(Provider):
             if page > total_pages:
                 break
 
-            page_response = self.request(page_link)
-            if page_response.status_code != 200:
-                break
-
-            page_content = BeautifulSoup(page_response.content, 'lxml')
+            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='item-description')
 
             if page == 1:
