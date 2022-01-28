@@ -34,8 +34,6 @@ class Mercadolibre(Provider):
                 price_section = section.find('span', class_='price-tag')
                 title_section = section.find('div', class_='ui-search-item__group--title')
                 title = title_section.find('h2').get_text().strip()
-                if price_section is not None:
-                    title = title + ' ' + price_section.get_text().strip()
 
                 yield {
                     'title': title,
