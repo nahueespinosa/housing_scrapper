@@ -21,8 +21,8 @@ class TelegramNotifier:
             for prop in properties:
                 logging.info(f"[telegram] Notifying about {prop.url}")
                 self.bot.send_message(chat_id=self.config['chat_id'],
-                    text=f"[{prop.title}]({prop.url})",
-                    parse_mode=telegram.ParseMode.MARKDOWN)
+                                      text=f"[{prop.title}]({prop.url})",
+                                      parse_mode=telegram.ParseMode.MARKDOWN)
         else:
             logging.info("[telegram] No new properties to notify about")
 

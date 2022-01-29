@@ -19,6 +19,7 @@ async def main() -> None:
 
     with Database('properties.db') as db:
         new_properties = []
+
         async def task(props: AsyncIterable[Property]) -> None:
             async for prop in props:
                 if db.insert_property(prop):

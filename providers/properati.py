@@ -11,8 +11,8 @@ class Properati(Provider):
         page = 1
 
         while True:
-            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
-            properties = page_content.find_all('div', class_=lambda class_: class_ and class_.startswith("StyledCardInfo"))
+            content = BeautifulSoup(await self.request(page_link), 'lxml')
+            properties = content.find_all('div', class_=lambda class_: class_ and class_.startswith("StyledCardInfo"))
 
             if not properties:
                 break

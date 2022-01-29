@@ -39,5 +39,5 @@ class Mercadolibre(Provider):
             from_ += 48
             filter_index = source.find('_')
             page_link = self.config['base_url'] + \
-                        source[:filter_index] + f'_Desde_{from_}' + source[filter_index:] + \
-                        '_NoIndex_True'
+                source[:filter_index] + f'_Desde_{from_}' + \
+                source[filter_index:] + '_NoIndex_True'
