@@ -1,31 +1,37 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+import asyncio
 import logging
 import yaml
-import sys
-from lib.notifier import Notifier
-from providers.processor import process_properties
 
-# logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+from database import Database
+from notifiers import TelegramNotifier
+from providers import Property, Provider
+from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
+from typing import Iterable
 
-# configuration    
-with open("configuration.yml", 'r') as ymlfile:
-    cfg = yaml.safe_load(ymlfile)
 
-disable_ssl = False
-if 'disable_ssl' in cfg:
-    disable_ssl = cfg['disable_ssl']
+async def main() -> None:
+    logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-notifier = Notifier.get_instance(cfg['notifier'], disable_ssl)
+    with open('configuration.yml', 'r') as ymlfile:
+        cfg = yaml.safe_load(ymlfile)
 
-new_properties = []
-for provider_name, provider_data in cfg['providers'].items():
-    try:
-        logging.info(f"Processing provider {provider_name}")
-        new_properties += process_properties(provider_name, provider_data)
-    except Exception as e:
-        logging.error(f"Error processing provider {provider_name}.\n{str(e)}")
+    with Database('properties.db') as db:
+        new_properties = []
+        async def task(props: Iterable[Property]) -> None:
+            [new_properties.append(prop) async for prop in props if db.insert_property(prop)]
 
-if len(new_properties) > 0:
+        tasks = []
+        for provider_name, provider_cfg in cfg['providers'].items():
+            provider = Provider.subclasses[provider_name](provider_cfg)
+            tasks.append(task(provider.props()))
+        await asyncio.gather(*tasks)
+
+    notifier = TelegramNotifier(cfg['notifier'])
     notifier.notify(new_properties)
+
+
+if __name__ == '__main__':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())

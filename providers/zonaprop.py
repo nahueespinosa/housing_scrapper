@@ -1,22 +1,19 @@
-#import requests
 from bs4 import BeautifulSoup
-import logging
-from providers.base_provider import BaseProvider
+from typing import Generator
 
-class Zonaprop(BaseProvider):
-    def props_in_source(self, source):
-        page_link = self.provider_data['base_url'] + source
+from .provider import Property, Provider
+
+
+class Zonaprop(Provider):
+    name: str = 'zonaprop'
+
+    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
+        page_link = self.config['base_url'] + source
         page = 1
         processed_ids = []
 
-        while(True):
-            logging.info(f"Requesting {page_link}")
-            page_response = self.request(page_link)
-            
-            if page_response.status_code != 200:
-                break
-            
-            page_content = BeautifulSoup(page_response.content, 'lxml')
+        while True:
+            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='postingCard')
 
             for prop in properties:
@@ -28,14 +25,11 @@ class Zonaprop(BaseProvider):
                 price_section = prop.find('span', class_='firstPrice')
                 if price_section is not None:
                     title = title + ' ' + price_section['data-price']
-                    
-                yield {
-                    'title': title, 
-                    'url': self.provider_data['base_url'] + prop['data-to-posting'],
-                    'internal_id': prop['data-id'],
-                    'provider': self.provider_name
-                    }
+
+                yield Property(title=title,
+                               url=self.config['base_url'] + prop['data-to-posting'],
+                               internal_id=prop['data-id'],
+                               provider=self.name)
 
             page += 1
-            page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")
-    
+            page_link = self.config['base_url'] + source.replace('.html', f'-pagina-{page}.html')

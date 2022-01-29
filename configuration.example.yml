@@ -1,0 +1,29 @@
+notifier:
+    messages:
+    - 'Hey, I have found new properties. Check them out:'
+    chat_id: <CHAT_ID>
+    token: <TOKEN>
+providers:
+  zonaprop:
+    base_url: 'https://www.zonaprop.com.ar'
+    sources:
+      - '/departamentos-alquiler-2-habitaciones.html'
+      - '/ph-alquiler-2-habitaciones.html'
+  argenprop:
+    base_url: 'https://www.argenprop.com'
+    sources:
+      - '/departamento-alquiler-pais-argentina-2-dormitorios'
+      - '/ph-alquiler-pais-argentina-2-dormitorios'
+  mercadolibre:
+    base_url: 'https://inmuebles.mercadolibre.com.ar'
+    sources:
+      - '/departamentos/alquiler/2-dormitorios/'
+      - '/casas/alquiler/2-dormitorios/'
+  properati:
+    base_url: 'https://www.properati.com.ar'
+    sources:
+      - '/departamento/alquiler/ambientes:2'
+  inmobusqueda:
+    base_url: 'https://www.inmobusqueda.com.ar'
+    sources:
+      - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'

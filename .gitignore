@@ -1,5 +1,12 @@
-/properties.db
-/configuration.yml
-/**/__pycache__
-/.vscode
-/.idea
+# Program files
+properties.db
+configuration.yml
+
+# Python cache
+**/__pycache__
+
+# Crontab log files
+*.log
+
+# Virtual environment files
+env
