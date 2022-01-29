@@ -1,7 +1,6 @@
 import re
 
 from bs4 import BeautifulSoup
-from typing import Generator
 
 from .provider import Property, Provider
 
@@ -9,7 +8,7 @@ from .provider import Property, Provider
 class Argenprop(Provider):
     name: str = 'argenprop'
 
-    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str):
         page_link = self.config['base_url'] + source
         page = 0
         regex = r'.*--(\d+)'
@@ -28,6 +27,7 @@ class Argenprop(Provider):
                     title = title + ' ' + price_section.get_text().strip()
                 href = prop.find('a', class_='card')['href']
                 matches = re.search(regex, href)
+                assert matches is not None
                 internal_id = matches.group(1)
 
                 yield Property(title=title,

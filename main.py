@@ -8,7 +8,7 @@ from database import Database
 from notifiers import TelegramNotifier
 from providers import Property, Provider
 from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
-from typing import Iterable
+from typing import AsyncIterable
 
 
 async def main() -> None:
@@ -19,8 +19,10 @@ async def main() -> None:
 
     with Database('properties.db') as db:
         new_properties = []
-        async def task(props: Iterable[Property]) -> None:
-            [new_properties.append(prop) async for prop in props if db.insert_property(prop)]
+        async def task(props: AsyncIterable[Property]) -> None:
+            async for prop in props:
+                if db.insert_property(prop):
+                    new_properties.append(prop)
 
         tasks = []
         for provider_name, provider_cfg in cfg['providers'].items():

@@ -1,7 +1,6 @@
 import re
 
 from bs4 import BeautifulSoup
-from typing import Generator
 
 from .provider import Property, Provider
 
@@ -9,7 +8,7 @@ from .provider import Property, Provider
 class Mercadolibre(Provider):
     name: str = 'mercadolibre'
 
-    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str):
         page_link = self.config['base_url'] + source + '_NoIndex_True'
         from_ = 1
         regex = r'(MLA-\d*)'
@@ -27,6 +26,7 @@ class Mercadolibre(Provider):
                     section = prop.find('a', class_='ui-search-result__content')
                 href = section['href']
                 matches = re.search(regex, href)
+                assert matches is not None
                 internal_id = matches.group(1).replace('-', '')
                 title_section = section.find('div', class_='ui-search-item__group--title')
                 title = title_section.find('h2').get_text().strip()
