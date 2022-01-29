@@ -1,13 +1,14 @@
 # Housing scrapper
 
+This is a tool that notifies through Telegram when a new property becomes available on any of the listing websites.
+
 This repository is based on https://github.com/rodrigouroz/housing_scrapper.
 
-I didn't make a fork since I rewrote a big part of the code.
-
-New features include:
-  - asynchronous requests
-  - type annotations
-  - continuous integration setup
+I rewrote much of the code as a personal challenge. New features include:
+  - Asynchronous requests
+  - Type annotations
+  - Automated tests
+  - Continuous integration setup
 
 ## Installation
 This was tested with `Python 3.8`.
@@ -23,7 +24,7 @@ pip3 install -r requirements.txt  # Install dependencies
 
 ## Configuration
 
-There's a `configuration.example.yml` that you can use as a template. Copy that file and rename it to `configuration.yml`.
+There is a `configuration.example.yml` that you can use as a template. Copy that file and rename it to `configuration.yml`.
 
 ### Notifier
 
@@ -66,9 +67,13 @@ providers:
 
 ## Running
 
-You can put this in your crontab (uses the virtual environment mentioned in the [installation instructions](#Installation))
-to run once every hour:
+You can put this in your crontab to run once every hour (using the virtual
+environment mentioned in the [installation instructions](#Installation)):
 
 ```bash
 0 * * * * cd <PATH_TO_REPOSITORY> && env/bin/python3 -m main >> run.log 2>&1
 ```
+
+## License
+
+[MIT](LICENSE)
