@@ -1,5 +1,7 @@
 # Housing scrapper
 
+[![CI](https://github.com/nahueespinosa/housing_scrapper/actions/workflows/ci.yml/badge.svg)](https://github.com/nahueespinosa/housing_scrapper/actions/workflows/ci.yml)
+
 This is a tool that notifies through Telegram when a new property becomes available on any of the listing websites.
 
 This repository is based on https://github.com/rodrigouroz/housing_scrapper.
@@ -11,7 +13,6 @@ I rewrote much of the code as a personal challenge. New features include:
   - Continuous integration setup
 
 ## Installation
-This was tested with `Python 3.8`.
 
 The recommended way to install dependencies is using a [virtual environment](https://docs.python.org/3/library/venv.html):
 
