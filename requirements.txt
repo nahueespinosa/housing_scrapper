@@ -1,5 +1,6 @@
 aiocfscrape==1.0.0
 beautifulsoup4==4.7.1
+flake8==4.0.1
 lxml==4.7.1
 mypy==0.931
 python-telegram-bot==13.10
