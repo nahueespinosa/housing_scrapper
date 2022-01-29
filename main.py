@@ -8,11 +8,7 @@ from database import Database
 from notifiers import TelegramNotifier
 from providers import Property, Provider
 from providers import Argenprop, Inmobusqueda, Mercadolibre, Properati, Zonaprop
-from typing import Iterable, List
-
-
-async def process_properties(db: Database, props: Iterable[Property]) -> List[Property]:
-    return [prop async for prop in props if db.insert_property(prop)]
+from typing import Iterable
 
 
 async def main() -> None:
@@ -22,14 +18,16 @@ async def main() -> None:
         cfg = yaml.safe_load(ymlfile)
 
     with Database('properties.db') as db:
+        new_properties = []
+        async def task(props: Iterable[Property]) -> None:
+            [new_properties.append(prop) async for prop in props if db.insert_property(prop)]
+
         tasks = []
         for provider_name, provider_cfg in cfg['providers'].items():
             provider = Provider.subclasses[provider_name](provider_cfg)
-            tasks.append(process_properties(db, provider.props()))
-        results = await asyncio.gather(*tasks)
+            tasks.append(task(provider.props()))
+        await asyncio.gather(*tasks)
 
-    # flatten results
-    new_properties = [prop for sublist in results for prop in sublist]
     notifier = TelegramNotifier(cfg['notifier'])
     notifier.notify(new_properties)
 
