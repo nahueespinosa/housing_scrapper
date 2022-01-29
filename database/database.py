@@ -39,11 +39,11 @@ class Database:
             with closing(self.connection.cursor()) as cursor:
                 cursor.execute(self.sql_select_property, prop.__dict__)
                 return cursor.fetchone() is not None
+        return False
 
     def insert_property(self, prop: Property) -> bool:
-        if self.connection:
-            if not self.property_exists(prop):
-                with closing(self.connection.cursor()) as cursor:
-                    cursor.execute(self.sql_insert_property, prop.__dict__)
+        if self.connection and not self.property_exists(prop):
+            with closing(self.connection.cursor()) as cursor:
+                cursor.execute(self.sql_insert_property, prop.__dict__)
                 return True
         return False
