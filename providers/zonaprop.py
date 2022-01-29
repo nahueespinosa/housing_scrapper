@@ -12,7 +12,7 @@ class Zonaprop(Provider):
         page = 1
         processed_ids = []
 
-        while(True):
+        while True:
             page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='postingCard')
 

@@ -14,7 +14,7 @@ class Argenprop(Provider):
         page = 0
         regex = r'.*--(\d+)'
 
-        while(True):
+        while True:
             content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = content.find_all('div', class_='listing__item')
 

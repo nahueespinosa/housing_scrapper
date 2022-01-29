@@ -14,7 +14,7 @@ class Mercadolibre(Provider):
         from_ = 1
         regex = r'(MLA-\d*)'
 
-        while(True):
+        while True:
             content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = content.find_all('li', class_='ui-search-layout__item')
 
