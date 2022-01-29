@@ -4,6 +4,7 @@ configuration.yml
 
 # Python cache
 **/__pycache__
+.mypy_cache
 
 # Crontab log files
 *.log
