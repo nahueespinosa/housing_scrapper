@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import logging
 
 from abc import ABC, abstractmethod
 from aiocfscrape import CloudflareScraper
 from dataclasses import dataclass
-from typing import Generator
+from typing import AsyncGenerator, Dict, Type
 
 
 @dataclass
@@ -15,7 +17,8 @@ class Property:
 
 
 class Provider(ABC):
-    subclasses = dict()
+    name: str
+    subclasses: Dict[str, Type[Provider]] = dict()
 
     def __init__(self, config):
         logging.info(f"[{self.name}] Setting up provider")
@@ -34,12 +37,12 @@ class Provider(ABC):
                 return await response.text() if response.ok else ''
 
     @abstractmethod
-    async def props_from_source(self, source) -> Generator[Property, None, None]:
+    async def props_from_source(self, source) -> AsyncGenerator[Property, None]:
         raise NotImplementedError
 
-    async def props(self) -> Generator[Property, None, None]:
+    async def props(self) -> AsyncGenerator[Property, None]:
         for index, source in enumerate(self.config['sources']):
             logging.info(f'[{self.name}] Processing source {index}')
-            async for prop in self.props_from_source(source):
+            async for prop in self.props_from_source(source):  # type: ignore
                 logging.info(f"[{self.name}] Processing property {prop.internal_id}")
                 yield prop

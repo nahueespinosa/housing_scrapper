@@ -15,9 +15,12 @@ class Database:
             captured_date integer DEFAULT CURRENT_TIMESTAMP
         );
         """
-    sql_create_index_on_properties_table = 'CREATE INDEX IF NOT EXISTS properties_internal_provider ON properties (internal_id, provider)'
-    sql_select_property = 'SELECT * FROM properties WHERE internal_id=:internal_id AND provider=:provider'
-    sql_insert_property = 'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
+    sql_create_index_on_properties_table = \
+        'CREATE INDEX IF NOT EXISTS properties_internal_provider ON properties (internal_id, provider)'
+    sql_select_property = \
+        'SELECT * FROM properties WHERE internal_id=:internal_id AND provider=:provider'
+    sql_insert_property = \
+        'INSERT INTO properties (internal_id, provider, url) VALUES (:internal_id, :provider, :url)'
 
     def __init__(self, filename: str):
         self.filename = filename

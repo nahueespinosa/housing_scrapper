@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  schedule:
+    - cron: '0 8 * * 0' # Every Sunday at 8:00
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install package dependencies
+      run: pip3 install -r requirements.txt
+
+    - name: Run static type checker
+      run: mypy .
+
+    - name: Run styleguide enforcer
+      run: flake8 --verbose

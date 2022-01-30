@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from typing import Generator
 
 from .provider import Property, Provider
 
@@ -7,7 +6,7 @@ from .provider import Property, Provider
 class Zonaprop(Provider):
     name: str = 'zonaprop'
 
-    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str):
         page_link = self.config['base_url'] + source
         page = 1
         processed_ids = []

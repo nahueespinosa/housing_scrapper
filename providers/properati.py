@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from typing import Generator
 
 from .provider import Property, Provider
 
@@ -7,13 +6,13 @@ from .provider import Property, Provider
 class Properati(Provider):
     name: str = 'properati'
 
-    async def props_from_source(self, source: str) -> Generator[Property, None, None]:
+    async def props_from_source(self, source: str):
         page_link = self.config['base_url'] + source
         page = 1
 
         while True:
-            page_content = BeautifulSoup(await self.request(page_link), 'lxml')
-            properties = page_content.find_all('div', class_=lambda class_: class_ and class_.startswith("StyledCardInfo"))
+            content = BeautifulSoup(await self.request(page_link), 'lxml')
+            properties = content.find_all('div', class_=lambda class_: class_ and class_.startswith("StyledCardInfo"))
 
             if not properties:
                 break
