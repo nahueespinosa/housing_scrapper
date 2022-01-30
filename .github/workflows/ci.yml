@@ -32,4 +32,4 @@ jobs:
       run: flake8 --verbose
 
     - name: Testing
-      run: python3 -m unittest discover tests --verbose
+      run: python3 -m unittest discover test --verbose

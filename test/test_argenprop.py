@@ -11,7 +11,7 @@ class TestArgenprop(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        with open('tests/examples/argenprop.html') as file:
+        with open('test/examples/argenprop.html') as file:
             cls.example_page = file.read()
         return super().setUpClass()
 

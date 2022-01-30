@@ -11,7 +11,7 @@ class TestZonaprop(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        with open('tests/examples/zonaprop.html') as file:
+        with open('test/examples/zonaprop.html') as file:
             cls.example_page = file.read()
         return super().setUpClass()
 

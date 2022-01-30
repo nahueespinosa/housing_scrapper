@@ -11,7 +11,7 @@ class TestProperati(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        with open('tests/examples/properati.html') as file:
+        with open('test/examples/properati.html') as file:
             cls.example_page = file.read()
         return super().setUpClass()
 
