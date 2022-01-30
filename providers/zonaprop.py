@@ -15,6 +15,9 @@ class Zonaprop(Provider):
             page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='postingCard')
 
+            if not properties:
+                return
+
             for prop in properties:
                 # if data-id was already processed we exit
                 if prop['data-id'] in processed_ids:

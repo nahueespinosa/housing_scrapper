@@ -14,6 +14,9 @@ class Inmobusqueda(Provider):
             page_content = BeautifulSoup(await self.request(page_link), 'lxml')
             properties = page_content.find_all('div', class_='ResultadoCaja')
 
+            if not properties:
+                return
+
             for prop in properties:
                 link = prop.find('div', class_='resultadoTipo').find('a')
                 href = link['href']

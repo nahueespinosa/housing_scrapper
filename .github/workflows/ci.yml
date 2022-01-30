@@ -30,3 +30,6 @@ jobs:
 
     - name: Run styleguide enforcer
       run: flake8 --verbose
+
+    - name: Testing
+      run: python3 -m unittest discover test --verbose
