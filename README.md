@@ -66,9 +66,26 @@ providers:
       - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'
 ```
 
-## Running
+## Usage
 
-You can put this in your crontab to run once every hour (using the virtual
+There is a main script to run the program with the following options:
+
+```
+usage: main.py [-h] [-c CONFIG] [-d DATABASE] [--notify] [--no-notify]
+
+Housing scrapper tool
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c CONFIG, --config CONFIG
+                        path to configuration file. It defaults to `configuration.yml`
+  -d DATABASE, --database DATABASE
+                        path to database file. It defaults to `properties.db`
+  --notify              notify results through a telegram bot [default]
+  --no-notify           avoid notifying results
+```
+
+You can add the following line to your crontab to run once every hour (using the virtual
 environment mentioned in the [installation instructions](#Installation)):
 
 ```bash

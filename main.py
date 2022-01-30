@@ -15,13 +15,13 @@ from typing import AsyncIterable
 async def main(argv=None) -> None:
     parser = ArgumentParser(description='Housing scrapper tool')
     parser.add_argument('-c', '--config', default='configuration.yml',
-                        help='Path to configuration file. It defaults to `configuration.yml`')
+                        help='path to configuration file. It defaults to `configuration.yml`')
     parser.add_argument('-d', '--database', default='properties.db',
-                        help='Path to database file. It defaults to `properties.db`')
+                        help='path to database file. It defaults to `properties.db`')
     parser.add_argument('--notify', dest='notify', action='store_true',
-                        help='Notify results through a telegram bot [default]')
+                        help='notify results through a telegram bot [default]')
     parser.add_argument('--no-notify', dest='notify', action='store_false',
-                        help='Avoid notifying results')
+                        help='avoid notifying results')
     parser.set_defaults(notify=True)
     args = parser.parse_args(argv)
 
