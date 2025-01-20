@@ -20,7 +20,7 @@ class Mercadolibre(Provider):
                 break
 
             for prop in properties:
-                section = prop.find('a', class_=['ui-search-result__link', 'ui-search-result__content'])
+                section = prop.find('a', class_=['poly-component__title'])
                 href = section['href']
                 matches = re.search(r'https:.*_JM', href)
                 assert matches is not None
@@ -28,8 +28,7 @@ class Mercadolibre(Provider):
                 matches = re.search(r'(MLA-\d*)', href)
                 assert matches is not None
                 internal_id = matches.group(1).replace('-', '')
-                title_section = section.find('div', class_='ui-search-item__group--title')
-                title = title_section.find('h2').get_text().strip()
+                title = section.get_text().strip()
 
                 yield Property(title=title,
                                url=href,

@@ -31,10 +31,19 @@ class Provider(ABC):
     async def request(self, url) -> str:
         logging.info(f'[{self.name}] Requesting {url}')
         # some sites return '403 Forbidden' if the request doesn't have a user-agent
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)'}
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)',
+            "Accept-Language": "en-US,en;q=0.9",
+            "Accept-Encoding": "gzip, deflate",
+            "Referer": "https://www.google.com/",
+        }
         async with CloudflareScraper() as session:
             async with session.get(url, headers=headers) as response:
-                return await response.text() if response.ok else ''
+                if not response.ok:
+                    logging.warning(f'[{self.name}] Request failed with status {response.status}')
+                    return ''
+
+                return await response.text()
 
     @abstractmethod
     async def props_from_source(self, source) -> AsyncGenerator[Property, None]:
